@@ -11,25 +11,46 @@ import { ORIGIN } from '../config.js';
  * @throws {Error} HTTP error! status: {number}.
  */
 export const searchResources = async (resourceType = '', searchQuery = '') => {
-    // --- declare your resource's URL ---
-    // hint: https://github.com/typicode/json-server#full-text-search
-    const URL = _;
+  // --- declare your resource's URL ---
+  // hint: https://github.com/typicode/json-server#full-text-search
+  const URL = `${ORIGIN}/${resourceType}`;
 
-    // --- fetch the API data (this works!) ---
-    const encodedURL = encodeURI(URL);
-    const response = await fetch(encodedURL);
+  console.log(URL);
 
-    // --- throw an error if the response is not ok (this works!) ---
-    if (!response.ok) {
-        const message = response.statusText
-            ? `${response.status}: ${response.statusText}\n-> ${URL}`
-            : `HTTP error! status: ${response.status}\n-> ${URL}`;
-        throw new Error(message);
-    }
+  // --- fetch the API data (this works!) ---
+  const encodedURL = encodeURI(URL);
+  const response = await fetch(encodedURL);
 
-    /* --- parse the data if the response was ok (this works!) ---*/
-    const data = await response.json();
+  // --- throw an error if the response is not ok (this works!) ---
+  if (!response.ok) {
+    const message = response.statusText
+      ? `${response.status}: ${response.statusText}\n-> ${URL}`
+      : `HTTP error! status: ${response.status}\n-> ${URL}`;
+    throw new Error(message);
+  }
 
-    // --- return the final data ---
-    return data;
+  /* --- parse the data if the response was ok (this works!) ---*/
+  const data = await response.json();
+
+  const result = searchObjectsByValue(data, searchQuery);
+
+  // --- return the final data ---
+  return result;
 };
+
+function searchObjectsByValue(obj, searchValue) {
+  let results = [];
+
+  for (let key in obj) {
+    let value = obj[key];
+    if (typeof value === 'object' && value !== null) {
+      results = results.concat(searchObjectsByValue(obj[key], searchValue));
+    } else if (typeof value === 'string') {
+      if (value.includes(searchValue)) {
+        results.push(obj);
+      }
+    }
+  }
+
+  return results;
+}

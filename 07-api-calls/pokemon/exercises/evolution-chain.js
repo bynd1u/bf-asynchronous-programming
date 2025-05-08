@@ -9,10 +9,11 @@ import { ORIGIN } from '../config.js';
  *
  * @throws {Error} HTTP error! status: {number}.
  */
+
 export const evolutionChain = async (chainId = 1) => {
     // --- generate and declare your resource's URL ---
     // docs: https://pokeapi.co/docs/v2#evolution-section
-    const URL = _;
+    const URL = `${ORIGIN}/evolution-chain/${chainId}`;
 
     // --- fetch the API data (this works!) ---
     const encodedURL = encodeURI(URL);
@@ -28,12 +29,24 @@ export const evolutionChain = async (chainId = 1) => {
 
     /* --- parse the data if the response was ok (this works!) ---*/
     const data = await response.json();
-
     // --- process the fetched data (if necessary) ---
-    //  you do not need to use `await` below this comment
-    //  you can refactor this to a separate logic function and test it
-    _; // tricky one!  you will need to push all the species into an array
+    const result = getObjectsByKey(data, 'species');
 
     // --- return the final data ---
-    return pokemon;
+    return result.reverse();
 };
+
+// --- util function to get objects by key ---
+
+function getObjectsByKey(obj, searchKey) {
+    let results = [];
+    for (let key in obj) {
+        if (typeof obj[key] === 'object') {
+            results = results.concat(getObjectsByKey(obj[key], searchKey));
+        }
+        if (key === searchKey) {
+            results.push(obj[key]);
+        }
+    }
+    return results;
+}

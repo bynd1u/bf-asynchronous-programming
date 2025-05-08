@@ -8,10 +8,10 @@ import { ORIGIN } from '../config.js';
  * @returns {Promise<array>} A promise that resolves to an array of todos.
  * @throws {Error} HTTP error! status: {number}
  */
-export const todosByCompleted = async () => {
+export const todosByCompleted = async (completed=true) => {
     // --- declare your resource's URL ---
     // use params to fetch only the todos you need
-    const URL = _;
+    const URL = `${ORIGIN}/todos`;
 
     // --- fetch the API data (this works!) ---
     const encodedURL = encodeURI(URL);
@@ -27,7 +27,14 @@ export const todosByCompleted = async () => {
 
     /* --- parse the data if the response was ok (this works!) ---*/
     const data = await response.json();
+    const result = [];
+    
+    for (let obj of data) {
+      if (obj.completed === completed) {
+        result.push(obj)
+      }
+    }
 
     // --- return the data ---
-    return data;
+    return result;
 };

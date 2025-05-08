@@ -3,7 +3,15 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 /**
  *
  */
-const getIntros = async (ids = []) => {};
+const getIntros = async (ids = []) => {
+  const userPromises = ids.map((userId) => fetchUserById(userId));
+
+  const users = await Promise.all(userPromises);
+
+  const intros = users.map((user) => `${user.id}: Hello, my name is ${user.name}`)
+
+  return intros;
+};
 
 // --- --- tests --- ---
 

@@ -5,7 +5,17 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 /**
  *
  */
-const createSummaries = async (ids = []) => {};
+const createSummaries = async (ids = []) => {
+  const ueserPromises = ids.map((userId) => fetchUserById(userId));
+
+  const users = await Promise.all(ueserPromises);
+
+  return users.map((user) => ({
+    name: user.name,
+    city: user.address.city,
+    companyName: user.company.name
+  }))
+};
 
 // --- --- tests --- ---
 

@@ -4,19 +4,19 @@ const { log } = labeledLogger();
 
 // fill in the blanks
 
-let x = '';
+let x = 'j';
 
-x += _;
+x += 'a';
 
 setTimeout(() => {
-    x += _;
+    x += "sc";
     log('cb 1:', x);
 }, 100);
 
-x += _;
+x += 'v';
 
 setTimeout(() => {
-    x += _;
+    x += "pt";
     log('cb 2:', x);
 }, 300);
 
@@ -27,11 +27,11 @@ setTimeout(() => {
 }, 500);
 
 setTimeout(() => {
-    x += _;
+    x += "ri";
     log('cb 4:', x);
 }, 200);
 
-x += _;
+x += 'a';
 
 log(x);
 

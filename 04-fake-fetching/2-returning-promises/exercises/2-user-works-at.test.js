@@ -9,7 +9,20 @@ const { log } = labeledLogger();
 /**
  *
  */
-const userWorksAt = () => {};
+const userWorksAt = (id, company) => {
+    const userPromise = fetchUserById(id);
+
+    const isCompanyMatch = (user) => {
+        if (user.company.name === company) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    const newPromise = userPromise.then(isCompanyMatch);
+    return newPromise;
+};
 
 // --- test function ---
 

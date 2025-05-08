@@ -3,7 +3,20 @@ import { fetchUserById } from '../../../lib/fetch-user-by-id/index.js';
 /**
  *
  */
-const contactDetails = async (ids = []) => {};
+const contactDetails = async (ids = []) => {
+    const userPromises = ids.map((userId) => fetchUserById(userId));
+
+    const results = await Promise.allSettled(userPromises);
+
+    return results.map((result, index) => {
+        if (result.status === 'fulfilled') {
+            const user = result.value;
+            return `${user.id}. ${user.email}, ${user.phone}, ${user.website}`;
+        } else {
+            return `404: Not Found: there is no user with id ${ids[index]}`;
+        }
+    });
+};
 
 // --- --- tests --- ---
 
@@ -12,7 +25,7 @@ describe('contactDetails: returns an array of user contact details', () => {
         it('finds contact details for user 5', async () => {
             const actual = await contactDetails([5]);
             expect(actual).toEqual([
-                '5: Lucio_Hettinger@annie.ca, (254)954-1289, demarco.info',
+                '5. Lucio_Hettinger@annie.ca, (254)954-1289, demarco.info',
             ]);
         });
         it('finds contact details for users 6, 1, 2', async () => {

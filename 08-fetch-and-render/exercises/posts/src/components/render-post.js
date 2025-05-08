@@ -21,7 +21,7 @@ export const renderPost = (post = {}, comments = {}) => {
         .reduce((all, next) => {
             all.append(next);
             return all;
-        });
+        }, document.createElement('div'));
 
     container.append(renderedComments);
 

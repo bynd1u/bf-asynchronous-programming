@@ -13,6 +13,8 @@ export const typicodeResource = async (...params) => {
     const paramsPath = params.join('/');
     const URL = `${ORIGIN}/${paramsPath}`;
 
+    console.log('URL: ' + URL);
+
     const encodedURL = encodeURI(URL);
     const response = await fetch(encodedURL);
 

@@ -1,3 +1,3 @@
-import { fetchAndRenderAlbum } from './listeners/fetch-and-render-post.js';
+import { fetchAndRenderPost } from './listeners/fetch-and-render-post.js';
 
-fetchAndRenderAlbum('choose-post-button');
+fetchAndRenderPost('choose-post-button');

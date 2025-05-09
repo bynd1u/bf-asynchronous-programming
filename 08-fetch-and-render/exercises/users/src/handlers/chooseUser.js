@@ -1,5 +1,5 @@
-import { typicodeResource } from '../api-calls/typicode-resource.js';
-import { renderUser } from '../components/render-user.js';
+import typicodeResource from '../api-calls/typicode-resource/js';
+import renderUser from '../components/render-user.js';
 
 export const chooseUser = async (event) => {
     const userId = event.target.form.userId.value;
